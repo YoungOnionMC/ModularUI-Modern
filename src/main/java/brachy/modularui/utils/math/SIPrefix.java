@@ -49,13 +49,7 @@ public enum SIPrefix {
     }
 
     SIPrefix(char symbol, double f, boolean inf) {
-        this.symbol = symbol;
-        this.stringSymbol = Character.toString(symbol);
-        this.factor = f;
-        this.oneOverFactor = 1 / f;
-        this.bigFactor = new BigDecimal(f);
-        this.bigOneOverFactor = new BigDecimal(this.oneOverFactor);
-        this.infiniteLike = inf;
+        this(symbol, f, 1 / f, inf);
     }
 
     SIPrefix(char symbol, double f, double fInv, boolean inf) {
