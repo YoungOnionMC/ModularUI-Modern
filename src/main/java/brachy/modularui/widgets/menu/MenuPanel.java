@@ -41,10 +41,8 @@ public class MenuPanel extends ModularPanel<MenuPanel> {
     @Override
     public void transform(IViewportStack stack) {
         ModularGuiContext context = getContext();
-        if (context != null) {
-            Matrix4f pose = context.getLastGraphicsPose();
-            stack.translate(pose.m30(), pose.m31());
-        }
+        Matrix4f pose = context.getLastGraphicsPose();
+        stack.translate(pose.m30(), pose.m31());
         super.transform(stack);
     }
 
