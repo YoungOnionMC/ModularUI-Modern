@@ -186,6 +186,10 @@ public class ArraySchema implements ISchema {
             return where(c, block.defaultBlockState());
         }
 
+        public Builder where(char c, String registryName) {
+            return where(c, ResourceLocation.tryParse(registryName));
+        }
+
         public Builder where(char c, ResourceLocation registryName) {
             Optional<Block> block = BuiltInRegistries.BLOCK.getOptional(registryName);
             if (block.isEmpty()) {
