@@ -12,6 +12,7 @@ import brachy.modularui.screen.ModularScreen;
 import brachy.modularui.screen.RichTooltip;
 
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.resources.ResourceLocation;
 

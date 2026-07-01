@@ -61,10 +61,11 @@ public class FluidSlot extends AbstractFluidDisplayWidget<FluidSlot>
     protected void addTooltip(RichTooltip tooltip) {
         IFluidTank fluidTank = getFluidTank();
         FluidStack fluid = this.syncHandler.getValue();
+        boolean phantom = this.syncHandler.phantom();
         if (fluid != null && !fluid.isEmpty()) {
             tooltip.addLine(fluid.getHoverName()).spaceLine(2);
         }
-        if (this.syncHandler.phantom()) {
+        if (phantom) {
             if (fluid != null) {
                 if (this.syncHandler.controlsAmount()) {
                     tooltip.addLine(Text.lang("modularui.fluid.phantom.amount",
@@ -76,9 +77,6 @@ public class FluidSlot extends AbstractFluidDisplayWidget<FluidSlot>
                         Text.lang("modularui.fluid.capacity", formatFluidTooltipAmount(fluidTank.getCapacity()),
                                 getUnit()));
             }
-            if (this.syncHandler.controlsAmount()) {
-                tooltip.addLine(Text.lang("modularui.fluid.phantom.control"));
-            }
         } else {
             if (fluid != null) {
                 tooltip.addLine(Text.lang("modularui.fluid.amount", formatFluidTooltipAmount(fluid.getAmount()),
@@ -87,19 +85,24 @@ public class FluidSlot extends AbstractFluidDisplayWidget<FluidSlot>
             } else {
                 tooltip.addLine(Text.lang("modularui.fluid.empty"));
             }
-            if (this.syncHandler.canFillSlot() || this.syncHandler.canDrainSlot()) {
-                tooltip.addLine(Text.EMPTY); // Add an empty line to separate from the bottom material tooltips
-                if (Interactable.hasShiftDown()) {
-                    if (this.syncHandler.canFillSlot() && this.syncHandler.canDrainSlot()) {
-                        tooltip.addLine(Text.lang("modularui.fluid.click_combined"));
-                    } else if (this.syncHandler.canDrainSlot()) {
-                        tooltip.addLine(Text.lang("modularui.fluid.click_to_fill"));
-                    } else if (this.syncHandler.canFillSlot()) {
-                        tooltip.addLine(Text.lang("modularui.fluid.click_to_empty"));
-                    }
+        }
+        boolean fills = this.syncHandler.canFillSlot(), drains = this.syncHandler.canDrainSlot();
+        if (fills || drains) {
+            tooltip.addLine(Text.EMPTY); // Add an empty line to separate from the bottom material tooltips
+            if (Interactable.hasShiftDown()) {
+                String phantom_suffix = phantom ? "_phantom" : "";
+                if (fills && drains) {
+                    tooltip.addLine(Text.lang("modularui.fluid.click_combined" + phantom_suffix));
+                } else if (drains) {
+                    tooltip.addLine(Text.lang("modularui.fluid.click_to_fill" + phantom_suffix));
                 } else {
-                    tooltip.addLine(Text.lang("modularui.tooltip.shift"));
+                    tooltip.addLine(Text.lang("modularui.fluid.click_to_empty" + phantom_suffix));
                 }
+                if (!phantom || this.syncHandler.controlsAmount()) {
+                    tooltip.addLine(Text.lang("modularui.fluid.scroll"));
+                }
+            } else {
+                tooltip.addLine(Text.lang("modularui.fluid.controls_info"));
             }
         }
         if (fluid != null && !fluid.isEmpty()) {
@@ -179,15 +182,12 @@ public class FluidSlot extends AbstractFluidDisplayWidget<FluidSlot>
 
     @Override
     public boolean onMouseScrolled(double scrollX, double scrollY) {
-        if (this.syncHandler.phantom()) {
-            if ((scrollY > 0 && !this.syncHandler.canFillSlot()) || (scrollY < 0 && !this.syncHandler.canDrainSlot())) {
-                return false;
-            }
-            MouseData mouseData = MouseData.create(scrollY > 0 ? 1 : -1);
-            this.syncHandler.syncToServer(FluidSlotSyncHandler.SYNC_SCROLL, mouseData::writeToPacket);
-            return true;
+        if ((scrollY > 0 && !this.syncHandler.canFillSlot()) || (scrollY < 0 && !this.syncHandler.canDrainSlot())) {
+            return false;
         }
-        return false;
+        MouseData mouseData = MouseData.create(scrollY > 0 ? 1 : -1);
+        this.syncHandler.syncToServer(FluidSlotSyncHandler.SYNC_SCROLL, mouseData::writeToPacket);
+        return true;
     }
 
     @Override

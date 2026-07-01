@@ -17,12 +17,14 @@ dependencies {
     // Optional dependencies
     compileOnly(variantOf(forge.curios) { classifier("api") })
     compileOnly(forge.sodium)
+    compileOnly(forge.mousetweaks)
 
     // Standard runtime mods //
     localRuntime(forge.curios)
     localRuntime(forge.jade)
     localRuntime(forge.spark)
     localRuntime(forge.modernFix)
+    localRuntime(forge.mousetweaks)
 
     // Runtime Recipe Viewers - uncomment whichever one you want to use //
     localRuntime(forge.emi)

@@ -16,6 +16,7 @@ import io.netty.buffer.ByteBuf;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -191,7 +192,7 @@ public class GenericSyncValue<B extends ByteBuf, T> extends AbstractGenericSyncV
          * @param getter function that returns the current value that may be synced
          * @return this builder
          */
-        public Builder<B, T> getter(Supplier<T> getter) {
+        public Builder<B, T> getter(Supplier<@UnknownNullability T> getter) {
             this.getter = getter;
             return this;
         }
@@ -205,7 +206,7 @@ public class GenericSyncValue<B extends ByteBuf, T> extends AbstractGenericSyncV
          * @param setter function that updates the source of the value
          * @return this builder
          */
-        public Builder<B, T> setter(Consumer<T> setter) {
+        public Builder<B, T> setter(Consumer<@UnknownNullability T> setter) {
             this.setter = setter;
             return this;
         }
@@ -218,7 +219,7 @@ public class GenericSyncValue<B extends ByteBuf, T> extends AbstractGenericSyncV
          * @param deserializer function that writes the value to a packet buffer
          * @return this builder
          */
-        public Builder<B, T> deserializer(StreamDecoder<B, T> deserializer) {
+        public Builder<B, T> deserializer(StreamDecoder<B, @UnknownNullability T> deserializer) {
             this.deserializer = deserializer;
             return this;
         }
@@ -231,7 +232,7 @@ public class GenericSyncValue<B extends ByteBuf, T> extends AbstractGenericSyncV
          * @param serializer function that reads the value from a packet buffer
          * @return this builder
          */
-        public Builder<B, T> serializer(StreamEncoder<B, T> serializer) {
+        public Builder<B, T> serializer(StreamEncoder<B, @UnknownNullability T> serializer) {
             this.serializer = serializer;
             return this;
         }
@@ -247,7 +248,7 @@ public class GenericSyncValue<B extends ByteBuf, T> extends AbstractGenericSyncV
          * @param equals function that determines if two instances of the value are equal
          * @return this builder
          */
-        public Builder<B, T> equals(EqualityTest<T> equals) {
+        public Builder<B, T> equals(EqualityTest<@UnknownNullability T> equals) {
             this.equals = equals;
             return this;
         }
@@ -281,7 +282,7 @@ public class GenericSyncValue<B extends ByteBuf, T> extends AbstractGenericSyncV
          * @param copy function that creates a new exact copy of the value
          * @return this builder
          */
-        public Builder<B, T> copy(ICopy<T> copy) {
+        public Builder<B, T> copy(ICopy<@UnknownNullability T> copy) {
             this.copy = copy;
             return this;
         }
@@ -307,7 +308,7 @@ public class GenericSyncValue<B extends ByteBuf, T> extends AbstractGenericSyncV
          * @see #serializer(StreamEncoder)
          * @see #equals(EqualityTest)
          */
-        public Builder<B, T> adapter(IByteBufAdapter<B, T> adapter) {
+        public Builder<B, T> adapter(IByteBufAdapter<B, @UnknownNullability T> adapter) {
             return deserializer(adapter)
                     .serializer(adapter)
                     .equals(adapter);

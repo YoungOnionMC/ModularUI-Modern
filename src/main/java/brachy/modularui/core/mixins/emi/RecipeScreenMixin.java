@@ -19,7 +19,7 @@ public class RecipeScreenMixin {
     @Shadow private List<WidgetGroup> currentPage;
 
     @Inject(method = "mouseScrolled", at = @At("HEAD"), remap = false, cancellable = true)
-    private void mui$mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY, CallbackInfoReturnable<Boolean> cir) {
+    private void modularui$mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY, CallbackInfoReturnable<Boolean> cir) {
         for (WidgetGroup group : currentPage) {
             for (Widget widget : group.widgets) {
                 if (widget instanceof ModularUIEmiRecipe.UIWrapperWidget wrapperWidget) {
@@ -32,7 +32,7 @@ public class RecipeScreenMixin {
     }
 
     @Inject(method = "mouseReleased", at = @At("HEAD"), remap = false, cancellable = true)
-    private void mui$mouseReleased(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
+    private void modularui$mouseReleased(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
         for (WidgetGroup group : currentPage) {
             for (Widget widget : group.widgets) {
                 if (widget instanceof ModularUIEmiRecipe.UIWrapperWidget wrapperWidget) {
@@ -45,7 +45,7 @@ public class RecipeScreenMixin {
     }
 
     @Inject(method = "mouseDragged", at = @At("HEAD"), remap = false, cancellable = true)
-    private void mui$mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY, CallbackInfoReturnable<Boolean> cir) {
+    private void modularui$mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY, CallbackInfoReturnable<Boolean> cir) {
         for (WidgetGroup group : currentPage) {
             for (Widget widget : group.widgets) {
                 if (widget instanceof ModularUIEmiRecipe.UIWrapperWidget wrapperWidget) {
